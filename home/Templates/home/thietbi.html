@@ -1,0 +1,164 @@
+{% extends 'home/trangchu.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+<link rel="stylesheet" href="{% static 'home/css/thietbi.css' %}">
+<link rel="stylesheet" href="{% static 'home/css/thietbi_ntt.css' %}">
+<script src="{% static 'home/js/thietbi.js' %}"></script>
+<div class="container_thietbi">
+    <h1>DANH SÁCH THIẾT BỊ</h1>
+    <div class="chuatimkiem">
+        <form method="GET" action="{% url 'thietbi' %}">
+            <div class="search-container">
+                <div class="chua2">
+                    <input type="text" name="search" id="search"  placeholder="Tìm kiếm từ khóa">
+                <button type="submit">Tìm kiếm</button>
+                <button type="button"  onclick="window.location.href='{% url 'thietbi' %}'">Hiển thị tất cả</button>
+                </div>
+                <div class="chua2">
+                    <label for="">Trạng thái</label>
+                    <select name="status" id="search-status">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="Tốt">Tốt</option>
+                        <option value="=Không tốt">Không tốt</option>
+                    </select>
+                </div>
+                <div class="chua2">
+                    <label for="">Giá</label>
+                    <select name="gia">
+                        <option value="">Chọn khoảng giá</option>
+                        <option value="0-1000">0 - 1,000</option>
+                        <option value="1000-5000">1,000 - 5,000</option>
+                        <option value="5000-10000">5,000 - 10,000</option>
+                        <option value="10000-50000">10,000 - 50,000</option>
+                    </select>
+                </div>
+                <div class="chua2">
+                    <label for="">Ngày mua</label>
+                <input type="date" name="date" id="search-date">
+                </div>
+                
+            </div>
+
+        </form>
+        <button class="them" id="tcl">Thêm thiết bị</button>
+
+        <button class="in" id="import">Import</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Mã thiết bị</th>
+                <th>Tên thiết bị</th>
+                <th>Loại thiết bị</th>
+                <th>Số lượng</th>
+                <th>Tình trạng</th>
+                <th>Ngày mua</th>
+                <th>Giá mua</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for thietbi in thiet_bi_list %}
+            <tr>
+                <td>{{ thietbi.matb}}</td>
+                <td>{{ thietbi.tentb }}</td>
+                <td>{{ thietbi.loaitb }}</td>
+                <td>{{ thietbi.soluong }}</td>
+                <td>{{ thietbi.tinhtrang }}</td>
+                <td>{{ thietbi.ngaymua|date:"Y-m-d" }}</td>
+                <td>{{ thietbi.giamua|floatformat }}</td>
+                <td class="chuanut">
+                    <button class="sua" data-id="{{ thietbi.matb}}" data-tentb="{{ thietbi.tentb }}"
+                        data-loaitb="{{ thietbi.loaitb }}" data-soluong="{{ thietbi.soluong }}"
+                        data-tinhtrang="{{ thietbi.tinhtrang }}" data-ngaymua="{{ thietbi.ngaymua }}"
+                        data-giamua="{{ thietbi.giamua }}">Sửa</button>
+                    <button class="nut-xoa" data-id="{{ thietbi.matb }}">
+                        Xóa
+                    </button>
+                    <div class="xoa-form" id="form-xoa-{{ thietbi.matb }}" style="display: none;">
+                        <div class="chuaxoa">
+                            <p>Bạn có muốn xóa thiết bị: {{ thietbi.matb }}?</p>
+                            <div class="chuanut">
+                                <button class="nut-huy" data-id="{{ thietbi.matb }}">Hủy</button>
+                                <button onclick="window.location.href='{% url 'delete_thietbi' thietbi.matb %}'">
+                                    Xác nhận
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">Không có dữ liệu</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+<div class="container_thietbi_ntt" id="form_thietbi_sua">
+    <p class="ti-close dong dongsua" id="dong_sua"></p>
+    <h1>Sửa thông tin</h1>
+    <form method="POST" id="form_sua">
+        {% csrf_token %}
+        <div class="chuanut">
+            <input type="hidden" name="matb" id="matb" readonly>
+            <input type="text" name="tentb" id="tentb" required>
+            <input type="text" name="loaitb" id="loaitb" required>
+            <input type="number" name="soluong" id="soluong" required>
+            <input type="text" name="tinhtrang" id="tinhtrang" required>
+            <p id="ngaymua1">Ngày mua</p>
+            <input type="date" name="ngaymua" id="ngaymua" required>
+            <input type="number" name="giamua" id="giamua" required>
+        </div>
+        <div class="chuanutthem">
+            <button type="submit">Cập nhật</button>
+        </div>
+    </form>
+
+</div>
+
+<div class="container_thietbi_ntt" id="form_thietbi_ntt">
+    <p class="ti-close dong" id="dong"></p>
+    <h1>Điền thông tin</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="chuanut">
+            {{ tb.tentb }}
+            {{ tb.loaitb }}
+            {{ tb.soluong }}
+            {{ tb.tinhtrang }}
+            <p>Ngày mua</p>
+            {{ tb.ngaymua }}
+            {{ tb.giamua }}
+
+        </div>
+        <div class="chuanutthem">
+            <button>Thêm</button>
+        </div>
+    </form>
+</div>
+<div id="form_import_thietbi" class="import">
+    <p class="ti-close dong" id="dongimport"></p>
+    <h1>Import ca làm từ excel</h1>
+    <form action="{% url 'thietbi.html/import' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="file" name="file" id="file" accept=".xlsx">
+        <button type="submit">Import</button>
+    </form>
+    <p>- Vui lòng chọn đúng định dạng file là .xlsx</p>
+    <p>- Các trường bắt buộc phải là: Tên thiết bị, Loại thiết bị, Số lượng, Tình trạng, Ngày mua, Giá mua
+    </p>
+
+</div>
+
+
+{% endblock %}

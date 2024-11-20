@@ -1,0 +1,87 @@
+{% extends 'home/trangchu.html' %}
+{% block content %}
+<div class="profile-info">
+    <h2>Thông tin cá nhân</h2>
+    <div class="profile-field">
+      <label for="tentk">Tên tài khoản:</label>
+      <span id="tentk">{{ user.tentk }}</span>
+    </div>
+    <div class="profile-field">
+      <label for="" class="username">Tên đăng nhập: </label>
+      <span id="username">{{ user.username}}</span>
+    </div>
+    <div class="profile-field">
+      <label for="phone">Số điện thoại:</label>
+      <span id="phone">{{ user.phone }}</span>
+    </div>
+    <div class="profile-field">
+      <label for="address">Địa chỉ:</label>
+      <span id="address">{{ user.address }}</span>
+    </div>
+    <div class="profile-field">
+      <label for="birth-date">Ngày sinh:</label>
+      <span id="birth-date">{{ user.birth_date|date:'d-m-Y' }}</span>
+    </div>
+    
+
+    <div class="dmk-field">
+      <button onclick="navigateTo('/change-password/')">Đổi mật khẩu</button>
+    </div>
+</div>
+<script>
+  function navigateTo(path) {
+    window.location.href = `http://127.0.0.1:8000${path}`;
+}
+</script>
+<style>
+  .dmk-field button{
+    margin-top: 10px;
+    padding: 8px;
+    background-color: var(--nut);
+    color: #fff;
+    border-radius: 4px;
+  }
+  .dmk-field button:hover{
+    background-color: var(--nuthover);
+  }
+
+  .dmk-field button:active{
+    background-color: var(--nutactive);
+  }
+    :root{
+        --bg: #fff;
+        --nut: #0047a5;
+        --nuthover: #0b62d4;
+        --xanhnhat: #95c0f8c4;
+        --nutactive: #5b99eb;
+        --chu: #000;
+        --header: #005bb5;
+        --sidebar: #003f8a;
+        --tddam: #75a9ed;
+        --tdnhat: #aec8ea;
+    }
+    .profile-info{
+        width: 50vh;
+    height: 100vh;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 5px;
+    margin-left: 300px;
+    padding-top: 70px;
+    z-index: 998;
+    background-color: var(--tddam);
+    }
+
+    .profile-info h2{
+        background-color: var(--tdnhat);
+        padding: 8px;
+        border-radius: 8px;
+    }
+    .profile-field{
+        background-color: var(--bg);
+        margin-top: 4px;
+        padding: 4px;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}

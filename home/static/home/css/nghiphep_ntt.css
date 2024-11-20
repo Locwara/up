@@ -1,0 +1,86 @@
+
+body{
+    position: relative;
+}
+:root{
+    --bg: #fff;
+    --nut: #0047a5;
+    --nuthover: #0b62d4;
+    --xanhnhat: #95c0f8c4;
+    --nutactive: #5b99eb;
+    --chu: #000;
+    --header: #005bb5;
+    --sidebar: #003f8a;
+    --tddam: #75a9ed;
+    --tdnhat: #aec8ea;
+    --bgf: #e2ebf8;
+}
+.container_nghiphep_ntt{
+    width: 400px;
+    height: 600px;
+    background-color: var(--bg);
+    margin-top: 50px;
+    border: 2px solid v;
+    box-shadow: 0 0 10px var(--tddam);
+    border-radius: 4px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+h1{
+    text-align: center;
+    color: var(--chu);
+}
+.container_nghiphep_ntt .chuanut{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+
+}
+.container_nghiphep_ntt input{
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--bgf);
+
+}
+.container_nghiphep_ntt .chuanutthem{
+   
+    text-align: center;
+}
+.container_nghiphep_ntt button{
+    padding: 9px;
+    background-color: var(--nut);
+    border-radius: 5px;
+    color: #fff;
+}
+.container_nghiphep_ntt button:hover{
+    background-color: var(--nuthover);
+
+}
+.container_nghiphep_ntt button:active{
+    background-color: var(--nutactive);
+
+}
+.container_nghiphep_ntt .dong{
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    color: #000;
+}
+
+.container_nghiphep_ntt .dong:hover{
+    color: var(--nuthover);
+}
+
+.container_nghiphep_ntt .dong:active{
+    color: var(--nutactive);
+}
+

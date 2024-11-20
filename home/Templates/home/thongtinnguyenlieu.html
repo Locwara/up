@@ -1,0 +1,143 @@
+{% extends 'home/trangchu.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+<link rel="stylesheet" href="{% static 'home/css/thongtinnguyenlieu.css' %}">
+<link rel="stylesheet" href="{% static 'home/css/thongtinnguyenlieu_ntt.css' %}">
+<script src="{% static 'home/js/thongtinnguyenlieu.js' %}"></script>
+<div class="container_thongtinnguyenlieu">
+    <h1>THÔNG TIN NGUYÊN LIỆU</h1>
+    <div class="chuatimkiem">
+        <form method="GET" action="{% url 'thongtinnguyenlieu' %}">
+            <div class="search-container">
+                <div class="chua2">
+                    <input type="text" name="search" id="search"  placeholder="Tìm kiếm từ khóa">
+                <button type="submit">Tìm kiếm</button>
+                <button type="button"  onclick="window.location.href='{% url 'thongtinnguyenlieu' %}'">Hiển thị tất cả</button>
+                </div>
+                <div class="chua2">
+                    <label for="">Giá</label>
+                    <select name="gia">
+                        <option value="">Chọn khoảng giá</option>
+                        <option value="0-1000">0 - 1,000</option>
+                        <option value="1000-5000">1,000 - 5,000</option>
+                        <option value="5000-10000">5,000 - 10,000</option>
+                        <option value="10000-50000">10,000 - 50,000</option>
+                    </select>
+                </div>
+                <div class="chua2">
+                    <label for="">Ngày hết hạn</label>
+                <input type="date" name="date" id="search-date">
+                </div>
+                
+            </div>
+
+        </form>
+       <button class="them" id="tcl">Thêm nguyên liệu</button>
+       
+       <button class="in" id="import" >Import</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Mã nguyên liệu</th>
+                <th>Tên nguyên liệu</th>
+                <th>Giá</th>
+                <th>Ngày hết hạn</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+                {% for nguyenlieu in nguyen_lieu_list %}
+           <tr>
+            <td>{{nguyenlieu.manl}}</td>
+            <td>{{nguyenlieu.tennl}}</td>
+            <td>{{nguyenlieu.gia}}</td>
+            <td>{{nguyenlieu.ngayhethan|date:"Y-m-d" }}</td>
+            <td class="chuanut"> 
+                <button class="sua" data-id="{{ nguyenlieu.manl}}" 
+                        data-tennl="{{ nguyenlieu.tennl }}"
+                        data-gia="{{ nguyenlieu.gia }}"
+                        data-ngayhethan="{{ nguyenlieu.ngayhethan}}">Sửa</button>
+                        <button class="nut-xoa" data-id="{{ nguyenlieu.manl }}">
+                            Xóa
+                        </button>
+                        <div class="xoa-form" id="form-xoa-{{ nguyenlieu.manl }}" style="display: none;">
+                            <div class="chuaxoa">
+                                <p>Bạn có muốn xóa thông tin nguyên liệu: {{ nguyenlieu.manl }}?</p>
+                                <div class="chuanut">
+                                    <button class="nut-huy" data-id="{{ nguyenlieu.manl }}">Hủy</button>
+                                    <button onclick="window.location.href='{% url 'delete_thongtinnguyenlieu' nguyenlieu.manl %}'">
+                                        Xác nhận
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+            </td>
+           </tr>
+                {% empty %}
+           <tr>
+            <td colspan="6">Không có dữ liệu</td>
+           </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <div class="container_thongtinnguyenlieu_ntt" id="form_nguyenlieu_sua">
+        <p class="ti-close dong dongsua" id="dong_sua"></p>
+        <h1>Sửa thông tin</h1>
+        <form method="POST" id="form_sua">
+            {% csrf_token %}
+            <div class="chuanut">
+                <input type="text" name="manl" id="manl" readonly>
+                <input type="text" name="tennl" id="tennl" required>
+                <input type="number" name="gia" id="gia" required>
+                <input type="date" name="ngayhethan" id="ngayhethan" required>
+            </div>
+            <div class="chuanutthem">
+                <button type="submit">Cập nhật</button>
+            </div>  
+        </form>
+
+    </div>
+
+        
+
+    <div class="container_thongtinnguyenlieu_ntt" id="form_thongtinnguyenlieu_ntt">
+        <p class="ti-close dong" id="dong"></p>
+        <h1>Điền thông tin</h1>
+        <form action="" method="POST">
+            {%csrf_token%}
+            <div class="chuanut">
+                {{ nl.manl }}
+                {{ nl.tennl }}
+                {{ nl.gia }}
+                {{ nl.dvt }}
+                {{ nl.soluong }}
+                <p>Ngày hết hạn</p>
+                {{ nl.ngayhethan }}
+            </div>
+            <div class="chuanutthem">
+                <button>Thêm</button>
+            </div>
+        </form>
+        </div>
+        <div id="form_import_thongtinnguyenlieu" class="import">
+            <p class="ti-close dong" id="dongimport"></p>
+            <h1>Import ca làm từ excel</h1>
+            <form action="{% url 'thongtinnguyenlieu.html/import' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+        
+                <input type="file" name="file" id="file" accept=".xlsx">
+                <button type="submit">Import</button>
+            </form>
+            <p>- Vui lòng chọn đúng định dạng file là .xlsx</p>
+            <p>- Các trường bắt buộc phải là:Tên nguyên liệu, Đơn vị tính, Số lượng, Giá, Mã nhà cung cấp, Ngày hết hạn</p>
+
+
+
+{% endblock %}

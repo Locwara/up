@@ -1,0 +1,154 @@
+{% extends 'home/trangchu.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+<link rel="stylesheet" href="{% static 'home/css/nghiphep.css' %}">
+<link rel="stylesheet" href="{% static 'home/css/nghiphep_ntt.css' %}">
+<script src="{% static 'home/js/nghiphep.js' %}"></script>
+<div class="container-nghiphep">
+    <h1>DANH SÁCH NGHỈ PHÉP</h1>
+    <div class="chuatimkiem">
+        <form method="GET" action="{% url 'nghiphep' %}">
+            <div class="search-container">
+                <div class="chua2">
+                    <input type="text" name="search" id="search"  placeholder="Tìm kiếm từ khóa">
+                    <button type="submit">Tìm kiếm</button>
+                    <button type="button"  onclick="window.location.href='{% url 'nghiphep' %}'">Hiển thị tất cả</button>
+                </div>
+                <div class="chua2">
+                    <label for="">Trạng thái</label>
+                    <select name="status" id="search-status">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="Chưa duyệt">Chưa duyệt</option>
+                        <option value="Đã duyệt">Đã duyệt</option>
+                    </select>
+                </div>
+                <div class="chua2">
+                    <label for="">Ngày bắt đầu</label>
+                <input type="date" name="date1" id="search-date">
+                </div>
+                <div class="chua2">
+                    <label for="">Ngày kết thúc</label>
+                <input type="date" name="date2" id="search-date">
+                </div>
+                
+            </div>
+
+        </form>
+       <button class="them" id="tcl">Thêm nghỉ phép</button>
+       
+       <button class="in" id="import" >Import</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Tên nhân viên</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày kết thúc</th>
+                <th>Lý do</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for nghiphep in nghi_phep_list %}
+            <tr>
+                <td>{{ nghiphep.manv.hoten }}</td>
+                <td>{{ nghiphep.ngaybd|date:"Y-m-d" }}</td>
+                <td>{{ nghiphep.ngaykt|date:"Y-m-d" }}</td>
+                <td>{{ nghiphep.lydonghi}}</td>
+                <td>{{ nghiphep.trangthai}}</td>
+
+                <td class="chuanut">
+                        <button class="sua" data-id="{{ nghiphep.manp}}" 
+                        data-manv="{{ nghiphep.manv }}"
+                        data-ngaybd="{{ nghiphep.ngaybd }}"
+                        data-ngaykt="{{ nghiphep.ngaykt }}"
+                        data-lydonghi="{{ nghiphep.lydonghi }}"
+                        data-trangthai="{{ nghiphep.trangthai }}">Sửa</button>
+                        <button class="nut-xoa" data-id="{{ nghiphep.manp }}">
+                            Xóa
+                        </button>
+                        <div class="xoa-form" id="form-xoa-{{ nghiphep.manp }}" style="display: none;">
+                            <div class="chuaxoa">
+                                <p>Bạn có muốn xóa nghỉ phép: {{ nghiphep.manp }}?</p>
+                                <div class="chuanut">
+                                    <button class="nut-huy" data-id="{{ nghiphep.manp }}">Hủy</button>
+                                    <button onclick="window.location.href='{% url 'delete_nghiphep' nghiphep.manp %}'">
+                                        Xác nhận
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <div class="container_nghiphep_ntt" id="form_nghiphep_sua">
+        <p class="ti-close dong dongsua" id="dong_sua"></p>
+        <h1>Sửa thông tin</h1>
+        <form method="POST" id="form_sua">
+            {% csrf_token %}
+            <div class="chuanut">
+                <input type="hidden" name="manp" id="manp" readonly>
+                <p>Chọn nhân viên</p>
+                {{ np.manv }}
+                <p> Ngày bắt đầu </p>
+                <input type="date" name="ngaybd" id="ngaybd" required>
+                <p> Ngày kết thúc </p>
+                <input type="date" name="ngaykt" id="ngaykt" required>
+                <input type="text" name="lydonghi" id="lydonghi" required>
+                <input type="text" name="trangthai" id="trangthai" required>
+            </div>
+            <div class="chuanutthem">
+                <button type="submit">Cập nhật</button>
+            </div>
+        </form>
+
+    </div>
+
+        
+
+    <div class="container_nghiphep_ntt" id="form_nghiphep_ntt">
+        <p class="ti-close dong" id="dong"></p>
+        <h1>Điền thông tin</h1>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="chuanut">  
+                <p>Chọn nhân viên</p>
+                {{ np.manv }}
+                <p>Ngày bắt đầu</p>
+                {{ np.ngaybd }}
+                <p>Ngày kết thúc</p>
+                {{ np.ngaykt }}
+                {{ np.lydonghi }}
+                {{ np.trangthai }}
+                
+            </div>
+            <div class="chuanutthem">
+                <button>Thêm</button>
+            </div>  
+        </form>
+       
+</div>
+<div id="form_import_nghiphep" class="import">
+    <p class="ti-close dong" id="dongimport"></p>
+    <h1>Import ca làm từ excel</h1>
+    <form action="{% url 'nghiphep.html/import' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="file" name="file" id="file" accept=".xlsx">
+        <button type="submit">Import</button>
+    </form>
+    <p>- Vui lòng chọn đúng định dạng file là .xlsx</p>
+    <p>- Các trường bắt buộc phải là: Mã nhân viên(hiện có), Ngày bắt đầu, Ngày kết thúc, Lý do, Trạng thái</p>
+
+</div>
+
+{% endblock %}

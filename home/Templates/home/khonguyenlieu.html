@@ -1,0 +1,101 @@
+{% extends 'home/trangchu.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'home/css/khonguyenlieu.css' %}">
+<link rel="stylesheet" href="{% static 'home/css/khonguyenlieu_ntt.css' %}">
+<link rel="stylesheet" href="{% static 'home/css/baotri_ntt.css' %}">
+<script src="{% static 'home/js/khonguyenlieu.js' %}"></script>
+<div class="container_khonguyenlieu">
+    <h1>KHO NGUYÊN LIỆU</h1>
+    <div class="chuatimkiem">
+        <form method="GET" action="{% url 'khonguyenlieu' %}">
+            <div class="search-container">
+                <div class="chua2">
+                    <input type="text" name="search" id="search"  placeholder="Tìm kiếm từ khóa">
+                <button type="submit">Tìm kiếm</button>
+                <button type="button"  onclick="window.location.href='{% url 'khonguyenlieu' %}'">Hiển thị tất cả</button>
+                </div>
+                <div class="chua2">
+                    <label for="">Số lượng</label>
+                    <select name="soluong">
+                        <option value="">Chọn số lượng</option>
+                        <option value="0 - 10">0 - 10</option>
+                        <option value="10 - 20">10 - 20</option>
+                        <option value="20 - 50">20 - 50</option>
+                        <option value="50 - 100">50 - 100</option>
+                    </select>
+                </div>
+                
+                
+            </div>
+
+        </form>
+
+        <button class="in">In</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Mã nguyên liệu</th>
+                <th>Tên nguyên liệu</th>
+                <th>Đơn vị tính</th>
+                <th>Số lượng</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for nguyenlieu in kho_nguyen_lieu_list %}
+            <tr>
+                <td>{{nguyenlieu.manl}}</td>
+                <td>{{nguyenlieu.tennl}}</td>
+                <td>{{nguyenlieu.dvt}}</td>
+                <td>{{nguyenlieu.soluong|floatformat}}</td>
+                <td class="chuanut">
+                    <button class="sua" data-id="{{ nguyenlieu.manl}}" data-tennl="{{ nguyenlieu.tennl }}"
+                        data-dvt="{{ nguyenlieu.dvt }}" data-soluong="{{ nguyenlieu.soluong}}">Sửa</button>
+                    <button class="nut-xoa" data-id="{{ nguyenlieu.manl }}">
+                        Xóa
+                    </button>
+                    <div class="xoa-form" id="form-xoa-{{ nguyenlieu.manl }}" style="display: none;">
+                        <div class="chuaxoa">
+                            <p>Bạn có muốn xóa bảo trì: {{ nguyenlieu.manl }}?</p>
+                            <div class="chuanut">
+                                <button class="nut-huy" data-id="{{ nguyenlieu.manl }}">Hủy</button>
+                                <button
+                                    onclick="window.location.href='{% url 'delete_khonguyenlieu' nguyenlieu.manl %}'">
+                                    Xác nhận
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">Không có dữ liệu</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="container_baotri_ntt" id="form_khonguyenlieu_sua">
+    <p class="ti-close dong dongsua" id="dong_sua"></p>
+    <h1>Sửa thông tin</h1>
+    <form method="POST" id="form_sua">
+        {% csrf_token %}
+        <div class="chuanut">
+            <input type="hidden" name="manl" id="manl" readonly>
+            <input type="text" name="tennl" id="tennl" required>
+            <input type="text" name="dvt" id="dvt" required>
+            <input type="number" name="soluong" id="soluong" required>
+        </div>
+        <div class="chuanutthem">
+            <button type="submit">Cập nhật</button>
+        </div>
+    </form>
+
+</div>
+
+
+
+{% endblock %}

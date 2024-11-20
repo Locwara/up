@@ -1,0 +1,154 @@
+{% extends 'home/trangchu.html' %}
+{% load static %}
+
+{% block content %}
+
+ 
+<link rel="stylesheet" href="{% static 'home/css/dungcu.css'%}">
+<link rel="stylesheet" href="{% static 'home/css/dungcu_ntt.css' %}">
+<script src="{% static 'home/js/dungcu.js' %}"></script>
+<div class="container-dungcu ctn-ttbnl">
+    <div class="tieude">
+        <h1>DỤNG CỤ</h1>
+    </div>
+    <div class="chuatimkiem">
+
+        <form method="GET" action="{% url 'dungcu' %}">
+            <div class="search-container">
+                <div class="chua2">
+                    <input type="text" name="search" id="search"  placeholder="Tìm kiếm từ khóa">
+                <button type="submit">Tìm kiếm</button>
+                <button type="button"  onclick="window.location.href='{% url 'dungcu' %}'">Hiển thị tất cả</button>
+                </div>
+                <div class="chua2">
+                    <label for="">Giá</label>
+                    <select name="gia">
+                        <option value="">Chọn khoảng giá</option>
+                        <option value="0-1000">0 - 1,000</option>
+                        <option value="1000-5000">1,000 - 5,000</option>
+                        <option value="5000-10000">5,000 - 10,000</option>
+                        <option value="10000-50000">10,000 - 50,000</option>
+                    </select>
+                </div>
+                <div class="chua2">
+                    <label for="">Ngày mua</label>
+                <input type="date" name="date" id="search-date">
+                </div>
+                
+            </div>
+        </form>
+        <button id="tcl">Thêm dụng cụ</button>
+        <button class="in" id="import">Import</button>
+    </div>
+   
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên Dụng Cụ</th>
+                    <th>Số Lượng</th>
+                    <th>Đơn Vị Tính</th>
+                    <th>Ngày Mua</th>
+                    <th>Giá</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dungcu in dung_cu_list %}
+                <tr>
+
+                    <td>{{dungcu.tendc}}</td>
+                    <td>{{dungcu.soluong}}</td>
+                    <td>{{dungcu.dvt}}</td>
+                    <td>{{dungcu.ngaymua|date:"Y-m-d"}}</td>
+                    <td>{{dungcu.giamua|floatformat}}</td>
+                    <td class="chuanut">
+                        <button class="sua" data-id="{{ dungcu.madc}}" data-tendc="{{ dungcu.tendc }}"
+                            data-soluong="{{ dungcu.soluong }}" data-dvt="{{ dungcu.dvt }}"
+                            data-ngaymua="{{ dungcu.ngaymua }}" data-giamua="{{ dungcu.giamua }}">Sửa</button>
+
+                        <button class="nut-xoa" data-id="{{ dungcu.madc }}">
+                            Xóa
+                        </button>
+                        <div class="xoa-form" id="form-xoa-{{ dungcu.madc }}" style="display: none;">
+                            <div class="chuaxoa">
+                                <p>Bạn có muốn xóa dụng cụ: {{ dungcu.madc }}?</p>
+                                <div class="chuanut">
+                                    <button class="nut-huy" data-id="{{ dungcu.madc }}">Hủy</button>
+                                    <button onclick="window.location.href='{% url 'delete_dungcu' dungcu.madc %}'">
+                                        Xác nhận
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">Không có dữ liệu</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+
+</div>
+<div class="container_dungcu_ntt" id="form_dungcu_sua">
+    <p class="ti-close dong dongsua" id="dong_sua"></p>
+    <h1>Sửa thông tin</h1>
+    <form method="POST" id="form_sua">
+        {% csrf_token %}
+        <div class="chuanut">
+            <input type="hidden" name="madc" id="madc" readonly>
+            <input type="text" name="tendc" id="tendc" required>
+            <input type="number" name="soluong" id="soluong" required>
+            <input type="text" name="dvt" id="dvt" required>
+            <p id="ngaymua1"> Ngày mua </p>
+            <input type="date" name="ngaymua" id="ngaymua" required>
+            <input type="number" name="giamua" id="giamua" required>
+        </div>
+        <div class="chuanutthem">
+            <button type="submit">Cập nhật</button>
+        </div>
+    </form>
+
+</div>
+
+
+
+<div class="container_dungcu_ntt" id="form_dungcu_ntt">
+    <p class="ti-close dong" id="dong"></p>
+    <h1>Thêm thông tin dụng cụ</h1>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="chuanut">
+            {{ dc.tendc }}
+            {{ dc.soluong }}
+            {{ dc.dvt }}
+            <p> Ngày mua </p>
+            {{ dc.ngaymua }}
+            {{ dc.giamua }}
+        </div>
+        <div class="chuanutthem">
+            <button type="submit">Thêm</button>
+        </div>
+    </form>
+
+</div>
+<div id="form_import_dungcu" class="import">
+    <p class="ti-close dong" id="dongimport"></p>
+    <h1>Import ca làm từ excel</h1>
+    <form action="{% url 'dungcu.html' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="file" name="file" id="file" accept=".xlsx">
+        <button type="submit">Import</button>
+    </form>
+    <p>- Vui lòng chọn đúng định dạng file là .xlsx</p>
+    <p>- Các trường bắt buộc phải là: Tên dụng cụ, Số lượng, Đơn vị tính, Ngày mua, Giá</p>
+</div>
+
+</div>
+
+{% endblock %}

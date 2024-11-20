@@ -1,0 +1,457 @@
+
+:root{
+    --bg: #fff;
+    --nut: #0047a5;
+    --nuthover: #0b62d4;
+    --xanhnhat: #95c0f8c4;
+    --nutactive: #5b99eb;
+    --chu: #000;
+    --header: #005bb5;
+    --sidebar: #003f8a;
+    --tddam: #75a9ed;
+    --tdnhat: #aec8ea;
+}
+:root{
+    --bg: #fff;
+    --nut: #0047a5;
+    --nuthover: #0b62d4;
+    --xanhnhat: #95c0f8c4;
+    --nutactive: #5b99eb;
+    --chu: #000;
+    --header: #005bb5;
+    --sidebar: #003f8a;
+    --border: #004080;
+}
+.chuanv{
+    background-color: var(--nuthover);
+}
+.subnv #lnv{
+    background-color: #3b8bf4;
+
+}
+.search-container{
+    display: flex;
+    width: 100vh;
+    gap: 4px;
+}
+.search-container #search{
+    height: 35px;
+}
+.tb{
+    margin: 4px 0;
+    color: green;
+    font-weight: bold;
+}
+#form_bao_tri_sua h1{
+    text-align: center;
+}
+#form_bao_tri_sua .chuanut{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#form_bao_tri_sua input{
+    width: 300px;
+}
+#form_bao_tri_sua button{
+    padding: 8px;
+}
+select, input{
+padding: 4px;
+border-radius: 4px;
+}
+:root{
+    --bg: #fff;
+    --nut: #0047a5;
+    --nuthover: #0b62d4;
+    --xanhnhat: #95c0f8c4;
+    --nutactive: #5b99eb;
+    --chu: #000;
+    --header: #005bb5;
+    --sidebar: #003f8a;
+    --tddam: #75a9ed;
+    --tdnhat: #aec8ea;
+    --bgf: #e2ebf8;
+}
+.chuanut p {
+    margin-bottom: 8px;
+    color: #000;
+}
+.dong:hover{
+    color: var(--nuthover);
+}
+.dong:active{
+    color: var(--nutactive);
+}
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000;
+}
+
+.import input {
+    color: #000;
+}
+
+.import #dongimport {
+    width: 50px;
+}
+
+.import {
+    width: 400px;
+    height: 250px;
+    background-color: #fff;
+    margin-top: 50px;
+    border: 2px solid var(--tddam);
+    box-shadow: 0 0 10px var(--tddam);
+    border-radius: 4px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    display: none;
+    transform: translate(-50%, -50%);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.import input {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: solid 1px var(--tddam);
+}
+
+.import button {
+    padding: 15px;
+    background-color: var(--nut);
+    border-radius: 5px;
+    color: #fff;
+}
+
+.import p {
+    margin-bottom: 8px;
+}
+:root{
+    --bg: #fff;
+    --nut: #0047a5;
+    --nuthover: #0b62d4;
+    --xanhnhat: #95c0f8c4;
+    --nutactive: #5b99eb;
+    --chu: #000;
+    --header: #005bb5;
+    --sidebar: #003f8a;
+    --tddam: #75a9ed;
+    --tdnhat: #aec8ea;
+    --bgf: #e2ebf8;
+}
+.xoa-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 120px;
+    width: 300px;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 2px solid var(--tddam);
+    padding: 16px;
+    z-index: 1000;
+}
+
+.chuanut {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.chuaxoa {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+}
+
+.chuaxoa p{
+    color: #000;
+    font-weight: bold;
+
+}
+
+.xoa-form button {
+    padding: 8px 16px;
+    background-color: var(--nut);
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    min-width: 80px;
+    color: #fff;
+}
+
+.xoa-form button:hover {
+    background-color: var(--nuthover);
+
+}
+
+.xoa-form button:active {
+    background-color: var(--nutactive);
+
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    display: none;  
+}
+.chuanut p {
+    margin-bottom: 8px;
+    color: #000;
+}
+/* .item>li>#nvul{
+    display: block;
+} */
+@media screen and (max-width: 768px) {
+    .container_luong {
+        overflow-x: auto;
+        width: 375px; 
+        max-height: 780px !important;  
+        margin-right: 0px !important;
+    }
+    .container_luong{
+        margin-left: -20px !important;
+        max-width: 375px !important;
+    }
+    table {
+        display: block !important;
+        max-height: 300px !important; 
+        overflow-y: auto !important;   
+        margin-top: 380px !important;
+    }
+
+    tbody {
+        max-height: none !important;
+        height: auto !important;
+    }
+
+    thead {
+        max-height: none !important;
+        height: auto !important;
+        position: static !important;
+    }
+    .search-container{
+        
+        display: flex;
+        flex-direction: column;
+    }
+    .search{
+        max-width: 100px;
+        display: flex;
+        flex-direction: column;
+    }
+    .container_luong .chuatimkiem{
+        position: fixed;
+        top: 100px;
+    }
+    .container_luong h1{
+        position: fixed;
+        font-size: 25px
+    }
+    .tb{
+        position: fixed;
+        margin-top: 320px;
+    }
+    .container_luong_ntt, .import{
+        transform: scale(0.8) !important; 
+        position: absolute !important;
+        top: 60px !important;
+        left: 1px !important;
+        height: 640px !important;
+    }
+
+}
+.container_luong {
+
+    width: 100vh;
+    height: 100vh;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 5px;
+    margin-left: 300px;
+    padding-top: 70px;
+    z-index: 998;
+}
+table{
+    min-width: 132vh;
+}
+td{
+    font-size: 13px;
+}
+th{
+    font-size: 15px;
+}
+thead{
+max-width: 130vh;
+}
+tbody{
+max-width: 130vh;
+}
+ table {
+    display: block;          
+    max-height: 400px;       
+    overflow-y: auto;       
+}
+thead{
+    position: fixed;
+}
+tbody{
+    padding-top: 35px;
+    display: block;
+}
+ table thead, 
+ table tbody tr {
+    display: table;          
+    width: 100%;
+    table-layout: fixed;     
+}
+
+.container_luong .them{
+    border-radius: 5px;
+    color: #fff;
+}
+.container_luong .in{
+    border-radius: 5px;
+}
+
+.container_luong h1{
+    color: var(--chu);
+    text-align: start;
+}
+
+
+.container_luong .chuatimkiem{
+
+margin-right: 5px;
+margin-top: 10px;
+
+}
+.container_luong input[type="text"]{
+    padding: 10px;
+width: 220px;
+border: 1px solid black;
+background-color: #fff;
+margin-right: 10px;
+}
+.container_luong .chuatimkiem button{
+    padding: 10px 12px;
+    color: #fff;
+    background-color:var(--nut);
+    border-radius: 10px solid black;
+    margin-right: 10px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+}
+.container_luong .chuatimkiem button:hover{
+    background-color: var(--nuthover);
+}
+
+.container_luong .chuatimkiem button:active{
+    background-color: var(--nutactive);
+}
+
+.container_luong .chuanut{
+    border-radius: 5px;
+}
+
+
+
+.container_luong .xoa{
+    padding: 5px;
+    background-color: #C4A484;
+    border-radius: 5px;
+} 
+
+
+
+
+table {
+    width: 130vh;
+    border-collapse: collapse;
+    background-color: #1174d6;
+    color: var(--chu);
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+thead tr {
+    background-color: #3794f1;  
+    border: 1px solid #000;
+}
+
+th {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #000;  
+    font-weight: normal;
+}
+
+td {
+    padding: 4px;
+    border: 1px solid #000;
+}
+tbody{
+    border: 1px solid #000;
+}
+
+
+tbody tr:nth-child(odd) {
+    background-color: var(--tdnhat);  
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--tddam); 
+
+
+tbody tr:hover {
+    background-color: #edf2f8;
+}
+
+
+
+.sua, .nut-xoa {
+    background-color: var(--nut);  
+    color: white;
+    border: none;   
+    padding: 6px 8px;
+    margin: 4px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+.sua:hover, .nut-xoa:hover {
+    background-color: var(--nuthover);
+}
+.sua:active, .nut-xoa:active{
+    background-color: var(--nutactive);
+}
+
+
+
+tbody tr td[colspan="6"] {
+    text-align: center;
+    padding: 20px;
+}

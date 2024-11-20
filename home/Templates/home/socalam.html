@@ -1,0 +1,149 @@
+{% extends 'home/trangchu.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<link rel="stylesheet" href="{% static 'home/css/socalam.css' %}">
+<link rel="stylesheet" href="{% static 'home/css/socalam_ntt.css' %}">
+<div class="container_calam">
+    <h1>DANH SÁCH CA LÀM</h1>
+    <div class="chuatimkiem">
+        <form method="GET" action="{% url 'socalam' %}">
+            <div class="search-container">
+                <div class="chua2">
+                    <input type="text" name="search" id="search"  placeholder="Tìm kiếm từ khóa">
+                <button type="submit">Tìm kiếm</button>
+                <button type="button"  onclick="window.location.href='{% url 'socalam' %}'">Hiển thị tất cả</button>
+                </div>
+               
+                <div class="chua2">
+                    <label for="">Ngày làm</label>
+                <input type="date" name="date" id="search-date">
+                </div>
+                
+            </div>
+            
+        </form>
+        <button class="them" id="tcl">Thêm ca làm</button>
+        <button class="in" id="import">Import</button>
+        <div class="loc-container">
+            <button class="loc-nut">Lọc theo thời gian <i class="ti-angle-down"></i></button>
+            <ul class="date-filter">
+                <li>
+                    <label for="">Từ ngày: </label>
+                    <input type="date" name="" id="ngaybatdau">
+                </li>
+                <li>
+                    <label for="">Đến ngày: </label>
+                    <input type="date" name="" id="ngayketthuc">
+                </li>
+            </ul>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Tên nhân viên</th>
+                <th>Ngày</th>
+                <th>Giờ bắt đầu</th>
+                <th>Giờ kết thúc</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody id="maintenanceTableBody">
+            {% for ca_lam in ca_lam_list %}
+            <tr data-date="{{ ca_lam.ngay|date:'Y-m-d' }}">
+                <td>{{ ca_lam.manv.hoten }}</td>
+                <td>{{ ca_lam.ngay|date:"Y-m-d" }}</td>
+                <td>{{ ca_lam.giobd|time:"H:i" }}</td>
+                <td>{{ ca_lam.giokt|time:"H:i" }}</td>
+                <td class="chuanut">
+                    <button class="sua" data-id="{{ ca_lam.macalam}}" data-manv="{{ ca_lam.manv }}"
+                        data-ngay="{{ ca_lam.ngay }}" data-giobd="{{ ca_lam.giobd|time:'H:i' }}"
+                        data-giokt="{{ ca_lam.giokt|time:'H:i' }}">Sửa</button>
+                    <button class="nut-xoa" data-id="{{ ca_lam.macalam }}">
+                        Xóa
+                    </button>
+                    <div class="xoa-form" id="form-xoa-{{ ca_lam.macalam }}" style="display: none;">
+                        <div class="chuaxoa">
+                            <p>Bạn có muốn xóa bảng số ca làm: {{ ca_lam.macalam }}?</p>
+                            <div class="chuanut">
+                                <button class="nut-huy" data-id="{{ ca_lam.macalam }}">Hủy</button>
+                                <button onclick="window.location.href='{% url 'delete_calam' ca_lam.macalam %}'">
+                                    Xác nhận
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="container_calam_ntt" id="form_calam_sua">
+    <p class="ti-close dong dongsua" id="dong_sua"></p>
+    <h1>Sửa thông tin</h1>
+    <form method="POST" id="form_sua">
+        {% csrf_token %}
+        <div class="chuanut">
+            <input type="hidden" name="macalam" id="macalam" readonly>
+            <p>Chọn nhân viên</p>
+            {{ form.manv }}
+            <p> Ngày làm </p>
+            <input type="date" name="ngay" id="ngay" required>
+            <p> Giờ bắt đầu </p>
+            <input type="time" name="giobd" id="giobd" required>
+            <p> Giờ kết thúc </p>
+            <input type="time" name="giokt" id="giokt" required>
+        </div>
+        <div class="chuanutthem">
+            <button type="submit">Cập nhật</button>
+        </div>
+    </form>
+</div>
+
+    <div class="container_calam_ntt" id="form_calam_ntt">
+        <p class="ti-close dong" id="dong"></p>
+        <h1>Thêm thông tin ca làm</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="chuanut">
+                <p>Nhân viên</p>
+                {{ form.manv }}
+                <p>Ngày</p>
+                {{ form.ngay }}
+                <p>Giờ bắt đầu</p>
+                {{ form.giobd }}
+                <p>Giờ kết thúc</p>
+                {{ form.giokt }}
+            </div>
+            <div class="chuanutthem">
+                <button type="submit">Thêm</button>
+            </div>
+        </form>
+    </div>
+    
+
+
+
+
+
+    <div id="form_import_calam" class="import">
+        <p class="ti-close dong" id="dongimport"></p>
+        <h1>Import ca làm từ excel</h1>
+        <form action="{% url 'socalam.html/import' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <input type="file" name="file" id="file" accept=".xlsx">
+            <button type="submit">Import</button>
+        </form>
+        <p>- Vui lòng chọn đúng định dạng file là .xlsx</p>
+        <p>- Các trường bắt buộc phải là:Mã nhân viên(hiện có), Ngày, Giờ bắt đầu, Giờ kết thúc</p>
+
+    </div>
+
+    <script src="{% static 'home/js/socalam_ntt.js' %}"></script>
+    {% endblock %}

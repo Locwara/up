@@ -1,0 +1,773 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ</title>
+    <script src="{% static 'home/js/trangchu.js'%}"></script>
+    <link rel="stylesheet" href="{% static 'home/css/font/themify-icons-font/themify-icons/themify-icons.css'%}">
+    <link rel="stylesheet" href="{% static 'home/css/trangchu.css'%}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+                <span class="close-btn">&times;</span>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const alerts = document.querySelectorAll('.alert')
+    alerts.forEach(function (alert) {
+        setTimeout(function () {
+            alert.style.display = 'none'
+        }, 5000)
+    })
+
+    const dong = document.querySelectorAll('.close-btn')
+    dong.forEach(function (dong) {
+        dong.addEventListener('click', function () {
+            this.parentElement.style.display = 'none'
+        })
+    })
+    })
+</script>
+<body>
+    <div id="main">
+        <div id="h-sb">
+
+            <div id="header">
+                <div id="nav1-2">
+                    <div id="nav1">
+                        <button id="sidebar-toggle" onclick="toggleSidebar()">
+                            <i class="bi bi-list"></i>
+                        </button>
+                        <i class="bi bi-house-door-fill" " onclick="navigateTo('/trangchu.html')"></i>
+                        <a href="#" onclick="navigateTo('/trangchu.html')" class="ten">Trang chủ</a>
+                    </div>
+
+                </div>
+                <div id="nav3">
+                    <a class="bi bi-person-circle" href="#" onclick="navigateTo('/profile')"></a>
+                    <p onclick="navigateTo('/profile')">{{ user.tentk }}</p>
+                    {% if user.is_superuser %}
+                    <p class="pcuoi" onclick="navigateTo('/profile')">(Quản lý)</p>
+                    {% else %}
+                    <p class="pcuoi" onclick="navigateTo('/profile')">(Nhân viên)</p>
+                    {% endif %}
+                    {% csrf_token %}
+                    <button type="submit" id="dx" class="logout-btn">
+                        LOGOUT
+                        
+                    </button>
+
+                </div>
+
+                <style>
+                    #nav3 p{
+                        cursor: pointer;
+                    }
+                    #nav3 .pcuoi{
+                        margin-right: 30px;
+                        cursor: pointer;
+                    }
+                    .bi-person-circle{
+                        font-size: 30px;
+                        margin-right: 5px;
+                        color: #fff;
+                    }
+                    :root {
+                        --bg: #fff;
+                        --nut: #0047a5;
+                        --nuthover: #0b62d4;
+                        --xanhnhat: #95c0f8c4;
+                        --nutactive: #5b99eb;
+                        --chu: #000;
+                        --border: #569ffe;
+
+                    }
+
+
+
+                    .overlay {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        z-index: 998;
+                        display: none;
+                    }
+
+                    .dangxuat {
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        height: 120px;
+                        width: 300px;
+                        background-color: var(--xanhnhat);
+                        border-radius: 4px;
+                        border: 2px solid var(--border);
+                        padding: 16px;
+                        z-index: 999;
+                    }
+
+                    .chuanut {
+                        margin-top: 20px;
+                        display: flex;
+                        gap: 10px;
+                        justify-content: center;
+                    }
+
+                    .chuaxoa {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                    }
+
+                    .dangxuat button {
+                        padding: 8px 16px;
+                        background-color: var(--nut);
+                        border-radius: 5px;
+                        cursor: pointer;
+                        border: none;
+                        min-width: 80px;
+                        color: #fff;
+                    }
+
+                    .dangxuat button:hover {
+                        background-color: var(--nuthover);
+                    }
+
+                    .dangxuat button:active {
+                        background-color: var(--nutactive);
+
+                    }
+
+                    #nav3 button {
+                        background-color: var(--xanhnhat);
+                        padding: 8px;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        color: #fff;
+
+                    }
+
+                    #nav3 button:hover {
+                        background-color: #91aff0;
+                    }
+
+                    #nav3 button:active {
+                        background-color: #fff;
+                    }
+
+                    #nav3 {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin-right: 20px;
+                    }
+                </style>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const overlay = document.createElement('div');
+                        overlay.className = 'overlay';
+                        document.body.appendChild(overlay);
+                        const btnntt = document.getElementById('dx');
+                        const btndong = document.getElementById('nut-huy');
+                        const form = document.getElementById('form_dangxuat');
+                        let form_open = false;
+
+                        btnntt.addEventListener('click', () => {
+                            if (!form_open) {
+                                form.style.display = 'block';
+                                overlay.style.display = 'block';
+                                form_open = true;
+                            } else {
+                                form.style.display = 'none';
+                                overlay.style.display = 'none';
+                                form_open = false;
+                            }
+                        });
+
+                        btndong.addEventListener('click', () => {
+                            form.style.display = 'none';
+                            overlay.style.display = 'none';
+                            form_open = false;
+                        });
+
+                        overlay.addEventListener('click', () => {
+                            form.style.display = 'none';
+                            overlay.style.display = 'none';
+                            form_open = false;
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="dangxuat" id="form_dangxuat" style="display: none;">
+            <div class="chuaxoa">
+                <p>Bạn có muốn đăng xuất?</p>
+                <div class="chuanut">
+                    <button id="nut-huy">Hủy</button>
+                    <button onclick="window.location.href='{% url 'logout' %}'">
+                        Xác nhận
+                    </button>
+                </div>
+            </div>
+        </div>
+        <style>
+            .dangxuat p {
+                color: #000;
+            }
+        </style>
+        
+        <div id="sidebar">
+            
+            {% if user.is_superuser %}
+            <div class="chuanv side-items">
+                <ul class="item nv">
+                    <li>
+                        <i class="bi bi-person-square"></i>
+                        <a id="nvul" href="#">Nhân Viên</a>
+                        <ul class="subnv sub">
+                            <li id="ttnv"><a href="#" onclick="navigateTo('/thongtinnhanvien.html')">Thông Tin Nhân
+                                    Viên</a></li>
+                            <li id="lnv"><a href="#" onclick="navigateTo('/luongnhanvien.html')">Lương Nhân Viên</a>
+                            </li>
+                            <li id="scl"><a href="#" onclick="navigateTo('/socalam.html')">Số Ca Làm</a></li>
+                            <li id="np"><a href="#" onclick="navigateTo('/nghiphep.html')">Lịch Nghỉ Phép</a></li>
+                        </ul>
+
+                    </li>
+                </ul>
+            </div>
+            {% endif %}
+            <div class="chuattb side-items">
+                <ul class="item ttb">
+                    <li>
+                        <i class="bi bi-motherboard-fill"></i>
+                        <a id="tbul" href="#">Trang Thiết Bị</a>
+                        <ul class="subtn sub">
+                            <li id="dc"><a href="#" onclick="navigateTo('/dungcu.html')">Dụng Cụ</a></li>
+                            <li id="tb"><a href="#" onclick="navigateTo('/thietbi.html')">Thiết Bị</a></li>
+                            <li id="bt"><a href="#" onclick="navigateTo('/baotri.html')">Bảo Trì</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="chuanl side-items">
+                <ul class="item nl">
+                    <li>
+                        <i class="bi bi-minecart-loaded"></i>
+                        <a id="nlul" href="#" >Nguyên Liệu</a>
+                        <ul class="subnl sub">
+                            <li id="ttnl"><a href="#" onclick="navigateTo('/thongtinnguyenlieu.html')">Thông Tin Nguyên
+                                    Liệu</a>
+                            </li>
+                            <li id="knl"><a href="#" onclick="navigateTo('/khonguyenlieu.html')">Kho Nguyên Liệu</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="lichsu side-item1">
+                <a href="#" onclick="navigateTo('/lichsu/')">Lịch Sử</a>
+            </div>
+            
+        </div>
+
+        {% block content %}
+        <div class="truot">
+            <div class="thongke">
+                <div class="thongkenhanh">
+                    <div class="nhanvien">
+                        <div class="chuaxuat">
+                            <h1>Nhân viên</h1>
+                            {% if user.is_superuser %}
+                            <a href="{% url 'export-excel-nhansu' %}" class="btn btn-primary">Xuất báo cáo nhân sự</a>
+                            {% endif %}
+                            <style>
+                                .chuaxuat a{
+                                    color: red;
+                                    font-style: none;
+                                    text-decoration: none;
+                                }
+                                .chuaxuat a:hover{
+                                    color: rgb(131, 28, 28);
+                                }
+                                .chuaxuat a:active{
+                                    color: #4a1616;
+                                }
+                            </style>
+                        </div>
+                        
+                        <ul>
+                            <li>Tổng số nhân viên: {{ tong_so_nhan_vien }}</li>
+                            <li>Nhân viên quản lý: {{ so_nhan_vien_quan_ly }}</li>
+                            <li>Nhân viên phục vụ: {{ so_nhan_vien_phuc_vu }}</li>
+                            <li>Nhân viên pha chế: {{ so_nhan_vien_pha_che }}</li>
+                            <li>Nhân viên kho: {{ so_nhan_vien_kho }}</li>
+                        </ul>
+                        <div class="bieudonhansu">
+                            <canvas id="myPieChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                    <script>
+                        const data = {
+                            labels: ['Nhân viên phục vụ', 'Nhân viên pha chế', 'Nhân viên kho', 'Nhân viên quản lý'],
+                            datasets: [{
+                                label: 'Số lượng nhân viên theo vị trí',
+                                data: [
+                                    {{ so_nhan_vien_phuc_vu|default:0 }},
+                                    {{ so_nhan_vien_pha_che|default:0 }},
+                                    {{ so_nhan_vien_kho|default:0 }},
+                                    {{ so_nhan_vien_quan_ly|default:0 }}
+                                ],
+                                backgroundColor: [
+                                    'rgb(255, 99, 132)',
+                                    'rgb(54, 162, 235)',
+                                    'rgb(255, 206, 86)',
+                                    'rgb(75, 192, 192)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        };
+                    
+                        const config = {
+                            type: 'pie',
+                            data: data,
+                            options: {
+                                responsive: true,
+                            }
+                        };
+                        const myPieChart = new Chart(
+                            document.getElementById('myPieChart'),
+                            config
+                        );
+                    </script>
+                    
+                </div>
+                <div class="container1 mx-auto px-4 py-8">
+      
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-semibold mb-2">Tổng số nhân viên</h3>
+                            <p class="text-3xl font-bold text-blue-600">{{ tong_so_nhan_vien }}</p>
+                            <div class="mt-2 text-sm text-gray-600">
+                                <div>Đang làm việc: {{ so_nhan_vien_dang_lam_viec }}</div>
+                                <div>Nghỉ phép: {{ so_nhan_vien_nghi_hom_nay }}</div>
+                            </div>
+                        </div>
+                
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-semibold mb-2">Phân bố vị trí</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span>Phục vụ:</span>
+                                    <span class="font-semibold">{{ so_nhan_vien_phuc_vu }}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Pha chế:</span>
+                                    <span class="font-semibold">{{ so_nhan_vien_pha_che }}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Kho:</span>
+                                    <span class="font-semibold">{{ so_nhan_vien_kho }}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Quản lý:</span>
+                                    <span class="font-semibold">{{ so_nhan_vien_quan_ly }}</span>
+                                </div>
+                            </div>
+                        </div>
+                
+                    
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-semibold mb-2">Nguyên liệu sắp hết hạn</h3>
+                            <p class="text-3xl font-bold text-yellow-600">{{ nguyen_lieu_sap_het_han.count }}</p>
+                            <div class="mt-2 max-h-32 overflow-y-auto">
+                                {% for nl in nguyen_lieu_sap_het_han %}
+                                <div class="text-sm text-gray-600">
+                                    {{ nl.ten }} - Hết hạn: {{ nl.ngayhethan|date:"d/m/Y" }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                
+               
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-semibold mb-2">Nguyên liệu dưới tồn kho</h3>
+                            <p class="text-3xl font-bold text-red-600">{{ nguyen_lieu_duoi_ton_kho.count }}</p>
+                            <div class="mt-2 max-h-32 overflow-y-auto">
+                                {% for nl in nguyen_lieu_duoi_ton_kho %}
+                                <div class="text-sm text-gray-600">
+                                    {{ nl.ten }} - SL: {{ nl.soluong }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+             
+                    <div class="thong-ke-container bg-white rounded-lg shadow p-6 mb-8">
+                        <div class="mb-6">
+                            <h2 class="text-xl font-bold mb-4">Thống kê nghỉ phép</h2>
+                            
+                   
+                            <form method="get" class="mb-4 flex gap-4">
+                                <div class="space-x-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="checkbox" name="thong_ke" value="ngay" class="form-checkbox" 
+                                               {% if 'ngay' in request.GET.getlist %}checked{% endif %}>
+                                        <span class="ml-2">Theo ngày</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="checkbox" name="thong_ke" value="thang" class="form-checkbox"
+                                               {% if 'thang' in request.GET.getlist %}checked{% endif %}>
+                                        <span class="ml-2">Theo tháng</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="checkbox" name="thong_ke" value="quy" class="form-checkbox"
+                                               {% if 'quy' in request.GET.getlist %}checked{% endif %}>
+                                        <span class="ml-2">Theo quý</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="checkbox" name="thong_ke" value="nam" class="form-checkbox"
+                                               {% if 'nam' in request.GET.getlist %}checked{% endif %}>
+                                        <span class="ml-2">Theo năm</span>
+                                    </label>
+                                </div>
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                    Cập nhật
+                                </button>
+                            </form>
+                        </div>
+                    
+                   
+                        <div class="charts-grid">
+                            {% if thong_ke_ngay %}
+                            <div class="chart-container">
+                                <div id="chart-ngay" style="width: 100%; height: 400px;"></div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if thong_ke_thang %}
+                            <div class="chart-container">
+                                <div id="chart-thang" style="width: 100%; height: 400px;"></div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if thong_ke_quy %}
+                            <div class="chart-container">
+                                <div id="chart-quy" style="width: 100%; height: 400px;"></div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if thong_ke_nam %}
+                            <div class="chart-container">
+                                <div id="chart-nam" style="width: 100%; height: 400px;"></div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function initChart(elementId, title, data) {
+            const chart = echarts.init(document.getElementById(elementId));
+            const option = {
+                title: {
+                    text: title,
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: Object.keys(data),
+                    axisLabel: {
+                        rotate: 45
+                    }
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: Object.values(data),
+                    type: 'bar',
+                    color: '#4f46e5'
+                }]
+            };
+            chart.setOption(option);
+    
+     
+            window.addEventListener('resize', function() {
+                chart.resize();
+            });
+        }
+    
+        {% if thong_ke_ngay %}
+        initChart('chart-ngay', 'Thống kê theo ngày', {{ thong_ke_ngay|safe }});
+        {% endif %}
+        
+        {% if thong_ke_thang %}
+        initChart('chart-thang', 'Thống kê theo tháng', {{ thong_ke_thang|safe }});
+        {% endif %}
+        
+        {% if thong_ke_quy %}
+        initChart('chart-quy', 'Thống kê theo quý', {{ thong_ke_quy|safe }});
+        {% endif %}
+        
+        {% if thong_ke_nam %}
+        initChart('chart-nam', 'Thống kê theo năm', {{ thong_ke_nam|safe }});
+        {% endif %}
+    });
+    
+});
+</script>
+{% endblock %}
+
+
+                <div class="nghiphep">
+                    <div class="chuanghiphep">
+                        <div class="chuaxuat">
+                            <h1>Hôm nay</h1>
+                            {% if user.is_superuser %}
+                            <a href="{% url 'xuat_baocao_nhanvien' %}" class="btn btn-primary">Xuất báo cáo nhân viên hôm nay</a>
+                            {% endif %}
+                        </div>
+                        <p>Số nhân viên đang làm việc: {{ so_nhan_vien_dang_lam_viec }}</p>
+                        <p>Số nhân viên nghỉ phép hôm nay: {{ so_nhan_vien_nghi_hom_nay }}</p>
+                    </div>
+                    <div class="chuabieudonghiphep">
+                        <canvas id="workLeaveChart" width="400" height="300"></canvas>
+                    </div>
+                    <canvas id="workLeaveChart" width="400" height="300"></canvas>
+                    <script>
+                        const ctx = document.getElementById('workLeaveChart').getContext('2d');
+                        const workLeaveChart = new Chart(ctx, {
+                            type: 'bar', 
+                            data: {
+                                labels: ['Đang làm việc', 'Nghỉ phép'],  
+                                datasets: [{
+                                    label: 'Số lượng nhân viên',
+                                    data: [{{ so_nhan_vien_dang_lam_viec }}, {{ so_nhan_vien_nghi_hom_nay }}],  
+                            backgroundColor: [
+                                'rgb(75, 192, 192)', 
+                                'rgb(255, 99, 132)'  
+                            ],
+                            borderColor: [
+                                'rgba(75, 192, 192, 1)',  
+                                'rgba(255, 99, 132, 1)'   
+                            ],
+                            borderWidth: 1
+                        }]
+                            },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true  
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false  
+                                }
+                            }
+                        }
+                        });
+                    </script>
+                </div>
+
+                <div class="nguyenlieu">
+                    <div class="chuaxuat">
+                        <h1>Nguyên liệu</h1>
+                        <a href="{% url 'export-excel-thietbi' %}" class="btn btn-success">Xuất báo cáo thiết bị</a>
+                        <br>
+                        <a href="{% url 'xuat_baocao_thietbi_nguyenlieu' %}" class="btn btn-primary">Xuất báo cáo tình trạng thiết bị và nguyên liệu</a>
+                    </div>
+                    
+                    <h3>Danh sách nguyên liệu sắp hết hạn</h3>
+                    <ul>
+                        {% for nguyenlieu in nguyen_lieu_sap_het_han %}
+                        <li>{{ nguyenlieu.tennl }} - Hết hạn vào: {{ nguyenlieu.ngayhethan }}</li>
+                        {% empty %}
+                        <li>Không có nguyên liệu sắp hết hạn trong vòng 7 ngày.</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h3>Cảnh báo nguyên liệu dưới mức tồn kho tối thiểu</h3>
+                    <ul>
+                        {% for nguyenlieu in nguyen_lieu_duoi_ton_kho %}
+                        <li>{{ nguyenlieu.tennl }} - Số lượng hiện tại: {{ nguyenlieu.soluong }}</li>
+                        {% empty %}
+                        <li>Không có nguyên liệu dưới mức tồn kho tối thiểu.</li>
+                        {% endfor %}
+                    </ul>
+                    <div class="chuabdnl">
+                        <canvas id="nguyenLieuChart" width="400" height="300"></canvas>
+                    </div>
+                    
+                    <script>
+                        const ctxNL = document.getElementById('nguyenLieuChart').getContext('2d');
+                        const nguyenLieuChart = new Chart(ctxNL, {
+                            type: 'pie',
+                            data: {
+                                labels: ['Sắp hết hạn', 'An toàn'],
+                                datasets: [{
+                                    data: [{{ nguyen_lieu_sap_het_han.count }}, {{ nguyen_lieu_duoi_ton_kho.count }}],
+                            backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)'],
+                            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+                            borderWidth: 1
+                        }]
+                    },
+                        options: {
+                            responsive: true,
+                                plugins: {
+                                legend: {
+                                    position: 'right',
+                                }
+                            }
+                        }
+                    });
+                    </script>
+
+                </div>
+                
+            </div>
+        </div>
+        <script>
+
+            function initializeCharts() {
+                const charts = {};
+                
+                function createChart(elementId, title, data) {
+                    if (!document.getElementById(elementId)) return;
+                    
+                    const chart = echarts.init(document.getElementById(elementId));
+                    const option = {
+                        title: {
+                            text: title,
+                            left: 'center',
+                            top: 10
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        grid: {
+                            left: '5%',
+                            right: '5%',
+                            bottom: '10%',
+                            top: '15%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: Object.keys(data),
+                            axisLabel: {
+                                rotate: 45,
+                                interval: 0
+                            }
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [{
+                            data: Object.values(data),
+                            type: 'bar',
+                            color: '#4f46e5'
+                        }]
+                    };
+                    
+                    chart.setOption(option);
+                    charts[elementId] = chart;
+                    
+                    return chart;
+                }
+                
+           
+                {% if thong_ke_ngay %}
+                createChart('chart-ngay', 'Thống kê theo ngày', {{ thong_ke_ngay|safe }});
+                {% endif %}
+                
+                {% if thong_ke_thang %}
+                createChart('chart-thang', 'Thống kê theo tháng', {{ thong_ke_thang|safe }});
+                {% endif %}
+                
+                {% if thong_ke_quy %}
+                createChart('chart-quy', 'Thống kê theo quý', {{ thong_ke_quy|safe }});
+                {% endif %}
+                
+                {% if thong_ke_nam %}
+                createChart('chart-nam', 'Thống kê theo năm', {{ thong_ke_nam|safe }});
+                {% endif %}
+                
+          
+                window.addEventListener('resize', () => {
+                    Object.values(charts).forEach(chart => chart.resize());
+                });
+            }
+            
+        
+            document.addEventListener('DOMContentLoaded', initializeCharts);
+            
+         
+            document.querySelector('form').addEventListener('submit', function(e) {
+                const formData = new FormData(this);
+                const searchParams = new URLSearchParams(formData);
+                
+                fetch(window.location.pathname + '?' + searchParams.toString())
+                    .then(response => response.text())
+                    .then(html => {
+                 
+                        document.querySelector('.charts-grid').innerHTML = html;
+                      
+                        initializeCharts();
+                    });
+            });
+            </script>
+        {% endblock %}
+
+</body>
+
+</html>

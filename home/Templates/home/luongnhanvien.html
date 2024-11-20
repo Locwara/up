@@ -1,0 +1,174 @@
+{% extends 'home/trangchu.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+
+<link rel="stylesheet" href="{% static 'home/css/luongnhanvien.css' %}">
+<link rel="stylesheet" href="{% static 'home/css/luongnhanvien_ntt.css' %}">
+<script src="{% static 'home/js/luongnhanvien_ntt.js' %}"></script>
+
+<div class="container_luong">
+    <h1>DANH SÁCH LƯƠNG</h1>
+    <div class="chuatimkiem">
+        <form method="GET" action="{% url 'bangluong' %}">
+            <div class="search-contai   ner">
+                <input type="text" name="search" id="search"  placeholder="Tìm kiếm từ khóa">
+                <div class="chua2">
+                    <p>Lương cơ bản</p>
+                    <select name="status" id="search-status">
+                        <option value="10000-15000">10000-15000/h</option>
+                        <option value="15000-20000">15000-20000/h</option>
+                        <option value="20000-25000">20000-25000/h</option>
+                        <option value="25000-100000">25000-100000/h</option>
+                    </select>
+                </div>
+                <div class="chua2">
+                    <p>Tháng lương</p>
+                    <input type="date" name="date" id="search-date">
+                </div>
+                
+                <button type="submit">Tìm kiếm</button>
+                <button type="button" onclick="window.location.href='{% url 'bangluong' %}'">Hiển thị tất cả</button>
+            </div>
+          
+        </form>
+       <button class="them" id="tcl">Thêm </button>
+       <button class="in" id="import" >Import</button>
+
+    </div>
+    <p class="tb">Vui lòng xóa và thêm lại nhân viên nếu muốn update số giờ!</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tên nhân viên</th>
+                <th>Tháng lương</th>
+                <th>Số giờ</th>
+                <th>Lương cơ bản </th>
+                <th>Tổng lương</th>
+                <th>Thao tác</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            {% for bangluong in bang_luong_list %}
+            <tr>
+                <td>{{ bangluong.manv.hoten }}</td>
+                <td>{{ bangluong.thangluong|date:"m-Y"}}</td>
+                <td>{{ bangluong.sogio|floatformat }}</td>
+                <td>{{ bangluong.luongcoban|floatformat }}</td>
+                <td>{{ bangluong.tongluong }}</td>
+                <td class="chuanut"> 
+                    <button class="sua" data-id="{{ bangluong.maluong}}" 
+                        data-manv="{{ bangluong.manv }}"
+                        data-thangluong="{{ bangluong.thangluong }}"
+                        data-sogio="{{ bangluong.sogio }}"
+                        data-luongcoban="{{ bangluong.luongcoban }}"
+                        data-tongluong="{{ bangluong.tongluong }}">Sửa</button>
+                    
+                        <button class="nut-xoa" data-id="{{ bangluong.maluong }}">
+                            Xóa
+                        </button>
+                        <div class="xoa-form" id="form-xoa-{{ bangluong.maluong }}" style="display: none;">
+                            <div class="chuaxoa">
+                                <p>Bạn có muốn xóa lương: {{ bangluong.maluong }}?</p>
+                                <div class="chuanut">
+                                    <button class="nut-huy" data-id="{{ bangluong.maluong }}">Hủy</button>
+                                    <button onclick="window.location.href='{% url 'delete_bangluong' bangluong.maluong %}'">
+                                        Xác nhận
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">Không có dữ liệu</td>
+            </tr>
+            {% endfor %}
+            
+            <style>
+                .sua, .nut-xoa {
+                    background-color: var(--nut);  
+                    color: white;
+                    border: none;   
+                    padding: 6px 8px;
+                    margin: 4px;
+                    cursor: pointer;
+                    border-radius: 3px;
+                    transition: background-color 0.2s;
+                }
+                
+                .sua:hover, .nut-xoa:hover {
+                    background-color: var(--nuthover);
+                }
+                .sua:active, .nut-xoa:active{
+                    background-color: var(--nutactive);
+                }
+            </style>
+
+        </tbody>
+    </table>
+    
+</div>
+<div class="container_luong_ntt" id="form_luong_sua">
+    <p class="ti-close dong dongsua" id="dong_sua"></p>
+    <h1>Sửa thông tin</h1>
+    <form method="POST" id="form_sua">
+        {% csrf_token %}
+        <div class="chuanut">
+            <input type="hidden" name="maluong" id="maluong" readonly>
+            <p>Chọn nhân viên</p>
+            {{ bl.manv }}
+            <p>Tháng lương</p>
+            <input type="date" name="thangluong" id="thangluong" required>
+            <input type="number" name="luongcoban" id="luongcoban" required>
+        </div>
+        <div class="chuanutthem">
+            <button type="submit">Cập nhật</button>
+        </div>  
+    </form>
+
+</div>
+<div class="container_luong_ntt" id="form_luong_ntt">
+    <p class="ti-close dong" id="dong"></p>
+    <h1>Điền thông tin</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="chuanut">
+            <p>Chọn nhân viên</p>
+            {{ bl.manv }}
+            <p>Tháng lương</p>
+            {{ bl.thangluong }}
+            {{ bl.luongcoban }}
+        </div>
+        <div class="chuanutthem">
+            <button>Thêm</button>
+        </div>  
+    </form>
+    
+</div>  
+
+<div id="form_import_bangluong" class="import">
+    <p class="ti-close dong" id="dongimport"></p>
+    <h1>Import ca làm từ excel</h1>
+    <form action="{% url 'bangluong.html/import' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="file" name="file" id="file" accept=".xlsx">
+        <button type="submit">Import</button>
+    </form>
+    <p>- Vui lòng chọn đúng định dạng file là .xlsx</p>
+    <p>- Các trường Cần có: Mã nhân viên(hiện có), Lương cơ bản</p>
+
+    
+    
+
+</div>
+
+
+{% endblock %}

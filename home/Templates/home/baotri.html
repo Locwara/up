@@ -1,0 +1,161 @@
+{% extends 'home/trangchu.html' %}
+{% load static %}
+{% block content %}
+
+
+
+
+<link rel="stylesheet" href="{% static 'home/css/baotri.css' %}">
+<link rel="stylesheet" href="{% static 'home/css/baotri_ntt.css' %}">
+<script src="{% static 'home/js/baotri.js' %}"></script>
+<div class="container_baotri">
+    <h1>DANH SÁCH BẢO TRÌ</h1>
+    <div class="chuatimkiem">
+        <form method="GET" action="{% url 'baotri' %}">
+            <div class="search-container">
+                <div class="chua2">
+                    <input type="text" name="search" id="search" placeholder="Tìm kiếm từ khóa">
+                    <button type="submit">Tìm kiếm</button>
+                    <button type="button" onclick="window.location.href='{% url 'baotri' %}'">Hiển thị tất cả</button>
+                </div>
+                <div class="chua2">
+                    <label for="">Chi phí</label>
+                    <select name="gia">
+                        <option value="">Chọn khoảng giá</option>
+                        <option value="0-1000">0 - 1,000</option>
+                        <option value="1000-5000">1,000 - 5,000</option>
+                        <option value="5000-10000">5,000 - 10,000</option>
+                        <option value="10000-50000">10,000 - 50,000</option>
+                    </select>
+                </div>
+                <div class="chua2">
+                    <label for="">Ngày bảo trì</label>
+                    <input type="date" name="date" id="search-date">
+                </div>
+
+            </div>
+
+        </form>
+        <div class="filter-container">
+            <button class="filter-btn">Lọc theo thời gian <i class="ti-angle-down"></i></button>
+            <ul class="date-filter">
+                <li>
+                    <label>Từ ngày:</label>
+                    <input type="date" id="startDate">
+                </li>
+                <li>
+                    <label>Đến ngày:</label>
+                    <input type="date" id="endDate">
+                </li>
+            </ul>
+        </div>
+        <button class="them" id="tcl">Thêm bảo trì</button>
+        <button class="in" id="import">Import</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Tên thiết bị</th>
+                <th>Ngày bảo trì</th>
+                <th>Mô tả</th>
+                <th>Chi phí</th>
+                <th>Người thực hiện</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody id="maintenanceTableBody">
+            {% for baotri in bao_tri_list %}
+            <tr data-date="{{ baotri.ngaybt|date:'Y-m-d' }}">
+                <td>{{ baotri.matb.tentb }}</td>
+                <td>{{ baotri.ngaybt|date:"Y-m-d" }}</td>
+                <td>{{ baotri.mota }}</td>
+                <td>{{ baotri.chiphi|floatformat }}</td>
+                <td>{{ baotri.nguoithuchien }}</td>
+                <td class="chuanut">
+                    <button class="sua" data-id="{{ baotri.mabt}}" data-matb="{{ baotri.matb }}"
+                        data-ngaybt="{{ baotri.ngaybt }}" data-mota="{{ baotri.mota }}"
+                        data-chiphi="{{ baotri.chiphi }}" data-nguoithuchien="{{ baotri.nguoithuchien}}">Sửa</button>
+
+                    <button class="nut-xoa" data-id="{{ baotri.mabt }}">
+                        Xóa
+                    </button>
+                    <div class="xoa-form" id="form-xoa-{{ baotri.mabt }}" style="display: none;">
+                        <div class="chuaxoa">
+                            <p>Bạn có muốn xóa bảo trì: {{ baotri.mabt }}?</p>
+                            <div class="chuanut">
+                                <button class="nut-huy" data-id="{{ baotri.mabt }}">Hủy</button>
+                                <button onclick="window.location.href='{% url 'delete_baotri' baotri.mabt %}'">
+                                    Xác nhận
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">Không có dữ liệu</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="container_baotri_ntt" id="form_bao_tri_sua">
+    <p class="ti-close dong dongsua" id="dong_sua"></p>
+    <h1>Sửa thông tin</h1>
+    <form method="POST" id="form_sua">
+        {% csrf_token %}
+        <div class="chuanut">
+            <input type="hidden" name="mabt" id="mabt">
+            <p>Chọn thiết bị</p>
+            {{bt.matb}}
+            <p>Ngày bảo trì</p>
+            <input type="date" name="ngaybt" id="ngaybt" required>
+            <input type="text" name="mota" id="mota" required>
+            <input type="number" name="chiphi" id="chiphi" required>
+            <input type="text" name="nguoithuchien" id="nguoithuchien" required>
+        </div>
+        <div class="chuanutthem">
+            <button type="submit">Cập nhật</button>
+        </div>
+    </form>
+</div>
+
+<div class="container_baotri_ntt" id="form_baotri_ntt">
+    <p class="ti-close dong" id="dong"></p>
+    <h1>Thêm thông tin bảo trì</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="chuanut">
+            {{ bt.mabt }}
+            <p>Chọn thiết bị</p>
+            {{ bt.matb }}
+            <p>Ngày bảo trì</p>
+            {{ bt.ngaybt }}
+            {{ bt.mota }}
+            {{ bt.chiphi }}
+            {{ bt.nguoithuchien }}
+        </div>
+        <div class="chuanutthem">
+            <button type="submit">Thêm</button>
+        </div>
+    </form>
+</div>
+<div id="form_import_baotri" class="import">
+    <p class="ti-close dong" id="dongimport"></p>
+    <h1>Import ca làm từ excel</h1>
+    <form action="{% url 'baotri.html/import' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="file" name="file" id="file" accept=".xlsx">
+        <button type="submit">Import</button>  
+    </form>
+    <p>- Vui lòng chọn đúng định dạng file là .xlsx</p>
+    <p>- Các trường bắt buộc phải là: Mã thiết bị(hiện có), Ngày bảo trì, Mô tả, Chi phí, Người thực hiện</p>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,192 @@
+
+body{
+    position: relative;
+}
+:root{
+    --bg: #fff;
+    --nut: #0047a5;
+    --nuthover: #0b62d4;
+    --xanhnhat: #95c0f8c4;
+    --nutactive: #5b99eb;
+    --chu: #000;
+    --header: #005bb5;
+    --sidebar: #003f8a;
+    --tddam: #75a9ed;
+    --tdnhat: #aec8ea;
+    --bgf: #e2ebf8;
+}
+.search-container{
+    display: flex;
+    width: 100vh;
+    gap: 4px;
+}
+.search-container #search{
+    height: 35px;
+}
+select, input{
+padding: 4px;
+border-radius: 4px;
+}
+.container_khonguyenlieu_ntt{
+    width: 400px;
+    height: 600px;
+    background-color: var(--bg);
+    margin-top: 50px;
+    border: 2px solid v;
+    box-shadow: 0 0 10px var(--tddam);
+    border-radius: 4px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+h1{
+    text-align: center;
+    color: var(--chu);
+}
+.container_khonguyenlieu_ntt .chuanut{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+
+}
+.container_khonguyenlieu_ntt input{
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--bgf);
+
+}
+.container_khonguyenlieu_ntt .chuanutthem{
+   
+    text-align: center;
+}
+.container_khonguyenlieu_ntt button{
+    padding: 9px;
+    background-color: var(--nut);
+    border-radius: 5px;
+    color: #fff;
+}
+.container_khonguyenlieu_ntt button:hover{
+    background-color: var(--nuthover);
+
+}
+.container_khonguyenlieu_ntt button:active{
+    background-color: var(--nutactive);
+
+}
+.container_khonguyenlieu_ntt .dong{
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    color: #000;
+}
+
+.container_khonguyenlieu_ntt .dong:hover{
+    color: var(--nuthover);
+}
+
+.container_khonguyenlieu_ntt .dong:active{
+    color: var(--nutactive);
+}
+:root{
+    --bg: #fff;
+    --nut: #0047a5;
+    --nuthover: #0b62d4;
+    --xanhnhat: #95c0f8c4;
+    --nutactive: #5b99eb;
+    --chu: #000;
+    --header: #005bb5;
+    --sidebar: #003f8a;
+    --border: #004080;
+}
+.chuanl{
+    background-color: var(--nuthover);
+}
+.subnl #knl{
+    background-color: #3b8bf4;
+
+}
+
+#form_bao_tri_sua h1 {
+    text-align: center;
+}
+
+#form_bao_tri_sua .chuanut {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#form_bao_tri_sua input {
+    width: 300px;
+}
+
+#form_bao_tri_sua button {
+    padding: 8px;
+}
+.xoa-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 120px;
+    width: 300px;
+    background-color: #4B3F3A;
+    border-radius: 4px;
+    border: 2px solid #A67B5B;
+    padding: 16px;
+    z-index: 1000;
+}
+
+.chuanut {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.chuaxoa {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.xoa-form button {
+    padding: 8px 16px;
+    background-color: #C4A484;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    min-width: 80px;
+}
+
+.xoa-form button:hover {
+    background-color: #6D4C41;
+    color: #F4D06F;
+}
+
+.xoa-form button:active {
+    background-color: #2E2A26;
+    color: #C4A484;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    display: none;
+}

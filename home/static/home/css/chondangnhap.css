@@ -1,0 +1,110 @@
+body{
+    /* background: url(./images/z5963733104493_79076b0fb5bccfffd059f6cdd94df8ee.jpg); */
+    /* background: url(https://images.pexels.com/photos/1144176/pexels-photo-1144176.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1); */
+    background: url('./images/background-powerpoint-xanh-duong-sang_094944576.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    
+}
+:root{
+    --bg: #fff;
+    --nut: #0047a5;
+    --nuthover: #0b62d4;
+    --xanhnhat: #95c0f8c4;
+    --nutactive: #5b99eb;
+
+
+}
+html{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff
+}
+.container{
+    width: 500px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--xanhnhat);
+    border-radius: 15px;
+    border-style: solid;
+    border-color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+
+
+
+}
+.chuatendn{
+
+
+   
+}
+.input{
+    border-radius: 10px;
+    border-color: black;
+    border-style: solid;
+    margin-bottom: 15px;
+    padding: 10px;
+
+    
+}
+
+.submit{
+    padding: 10px;
+    width: 100px;
+    background-color: var(--nut);
+    border-radius: 5px;
+    margin-top: 5px;
+    color: #fff;
+}
+.submit:hover{
+    
+    background-color: var(--nuthover);
+
+}
+.submit:active{
+    background-color: var(--nutactive);
+
+}
+.chua a{
+    color: aquamarine;
+}
+.captcha-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 95px;
+    margin-top: 30px;
+}
+
+#captcha {
+    border-radius: 10px;
+    border-color: black;
+    border-style: solid;
+    margin-bottom: 15px;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+#captcha-img {
+    flex: 1;
+    height: 20px;
+    width: 40%;
+    
+}
+@media screen and (max-width: 768px) {
+    .container{
+        transform: scale(0.8) !important; 
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        max-width: 300px;
+    }
+
+}

@@ -1,0 +1,114 @@
+body{
+    background: url(./images/z5963733104493_79076b0fb5bccfffd059f6cdd94df8ee.jpg);
+    /* background: url(https://images.pexels.com/photos/1144176/pexels-photo-1144176.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    
+}
+.container{
+    width: 500px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    border-style: solid;
+    border-color: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+
+
+
+}
+html{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+}
+.chuatendn{
+
+
+td{
+    font-size: 13px;
+}
+th{
+    font-size: 15px;
+}
+thead{
+max-width: 120vh;
+}
+tbody{
+max-width: 140vh;
+}
+.container_baotri table tbody {
+    display: block;          
+    max-height: 400px;       
+    overflow-y: auto;       
+}
+
+.container_baotri table thead, 
+.container_baotri table tbody tr {
+    display: table;          
+    width: 100%;
+    table-layout: fixed;     
+}
+   
+}
+.input{
+    border-radius: 10px;
+    border-color: black;
+    border-style: solid;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: beige;
+    font-style: none;
+    border: none;
+    
+}
+.submit{
+    padding: 10px;
+    width: 100px;
+    background-color: #C4A484;
+    border-radius: 5px;
+    margin-top: 5px;
+    color: #fff;
+}
+.submit:hover{
+    
+    background-color: #6D4C41;
+    color: #F4D06F;
+}
+.submit:active{
+    background-color: #2E2A26;
+    color: #C4A484;
+}
+.chua a{
+    color: aquamarine;
+}
+.captcha-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 95px;
+    margin-top: 30px;
+}
+
+#captcha {
+    border-radius: 10px;
+    border-color: black;
+    border-style: solid;
+    margin-bottom: 15px;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+#captcha-img {
+    flex: 1;
+    height: 20px;
+    width: 40%;
+    
+}
