@@ -85,8 +85,7 @@ ROOT_URLCONF = 'doan1.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'Templates')],
-        'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, 'home/templates')],
         'OPTIONS': {
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
@@ -101,6 +100,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 
 WSGI_APPLICATION = 'doan1.wsgi.application'
