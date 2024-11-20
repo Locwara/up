@@ -15,4 +15,3 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'doan1.settings')
 
 application = get_wsgi_application()
 
-app = application
