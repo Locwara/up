@@ -1921,3 +1921,14 @@ def import_excel_thongtinnhanvien(request):
         messages.error(request, f'Import thất bại: {str(e)}')
         
     return redirect('thongtinnhanvien')
+
+
+from django.core.management import call_command
+from django.http import HttpResponse
+
+def run_migrations(request):
+    try:
+        call_command('migrate')
+        return HttpResponse("Migrations completed successfully.")
+    except Exception as e:
+        return HttpResponse(f"Error running migrations: {e}")

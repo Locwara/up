@@ -18,6 +18,7 @@ from django.urls import path, include
 from home import views as home
 
 urlpatterns = [
+    path('run-migrations/', home.run_migrations, name='run_migrations'),
     path('admin/', admin.site.urls, name='admin'),
     path('', home.get_index, name="index"),
     path('register/', home.register, name='register'),

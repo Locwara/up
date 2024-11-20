@@ -13,9 +13,10 @@ class AuthenticationMiddleware:
             reverse('register'), 
             reverse('index'),
             reverse('forgot_password'),
+            reverse('run_migrations'),
             '/static/',
             '/media/',
-            '/captcha/',
+            '/captcha/0',
         ]
         
         admin_only_urls = [
